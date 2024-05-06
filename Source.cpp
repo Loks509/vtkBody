@@ -27,6 +27,8 @@ int main() {
 	file << "X Y Z\n";
 	SphereVTK sphere("ttt.vtk", N_x, N_y, N_z);
 
+	sphere.setSmooth(true);
+
 	for (size_t i = 0; i < N_x; i++)
 	{
 		cout << i << endl;

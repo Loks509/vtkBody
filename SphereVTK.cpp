@@ -61,18 +61,18 @@ void SphereVTK::setSmooth(bool isSmooth)
 
 void SphereVTK::createCells()
 {
-	for (size_t i = 0; i < Nx - 1; i++)
+	for (int i = 0; i < Nx - 1; i++)
 	{
 		bool flag = true;
 
-		int indexFirst = findFirstI(i);	//первая точка в слое
-		int indexFirstEnd = findEndI(i);	//последняя точка в слое
+		int indexFirst = findFirstI(i);				//first point in layer
+		int indexFirstEnd = findEndI(i);			//last point in layer
 
-		int indexSecond = findFirstI(i + 1);	//первая точка в слое
-		int indexSecondEnd = findEndI(i + 1);	//последняя точка в слое
+		int indexSecond = findFirstI(i + 1);		//first point in layer
+		int indexSecondEnd = findEndI(i + 1);		//last point in layer
 
 		if(indexFirst >= 0 && indexSecond >= 0 && indexFirstEnd>=0 && indexSecondEnd>=0)
-		for (size_t currIndex = indexFirst; currIndex <= indexFirstEnd; currIndex++)
+		for (int currIndex = indexFirst; currIndex <= indexFirstEnd; currIndex++)
 		{
 			vector<int> data_indexes = indexData[currIndex];
 			int i1 = data_indexes[0];
@@ -102,155 +102,156 @@ void SphereVTK::createCells()
 				) {
 				voxelData.push_back(vector<int>{p0, p1, p2, p3, p4, p5, p6, p7});
 			}
-			//----------------wedge data-----------------
-			else if (
-				p0 < 0 &&
-				p1 < 0 &&
-				p2 >= 0 &&
-				p3 >= 0 &&
-				p4 >= 0 &&
-				p5 >= 0 &&
-				p6 >= 0 &&
-				p7 >= 0
-				) {
-				wedgeData.push_back(vector<int>{p5, p3, p7, p4, p2, p6});
-			}
-			else if (
-				p0 >= 0 &&
-				p1 >= 0 &&
-				p2 >= 0 &&
-				p3 >= 0 &&
-				p4 < 0 &&
-				p5 < 0 &&
-				p6 >= 0 &&
-				p7 >= 0
-				) {
-				wedgeData.push_back(vector<int>{p7, p1, p3, p6, p0, p2});
-			}
-			else if (
-				p0 >= 0 &&
-				p1 >= 0 &&
-				p2 >= 0 &&
-				p3 >= 0 &&
-				p4 >= 0 &&
-				p5 >= 0 &&
-				p6 < 0 &&
-				p7 < 0
-				) {
-				wedgeData.push_back(vector<int>{p1, p3, p5, p0, p2, p4});
-			}
-			else if (
-				p0 >= 0 &&
-				p1 >= 0 &&
-				p2 < 0 &&
-				p3 < 0 &&
-				p4 >= 0 &&
-				p5 >= 0 &&
-				p6 >= 0 &&
-				p7 >= 0
-				) {
-				wedgeData.push_back(vector<int>{p1, p7, p5, p0, p6, p4});
-			}
+			else if (isSmooth) {
+				//----------------wedge data-----------------
+				if (
+					p0 < 0 &&
+					p1 < 0 &&
+					p2 >= 0 &&
+					p3 >= 0 &&
+					p4 >= 0 &&
+					p5 >= 0 &&
+					p6 >= 0 &&
+					p7 >= 0
+					) {
+					wedgeData.push_back(vector<int>{p5, p3, p7, p4, p2, p6});
+				}
+				else if (
+					p0 >= 0 &&
+					p1 >= 0 &&
+					p2 >= 0 &&
+					p3 >= 0 &&
+					p4 < 0 &&
+					p5 < 0 &&
+					p6 >= 0 &&
+					p7 >= 0
+					) {
+					wedgeData.push_back(vector<int>{p7, p1, p3, p6, p0, p2});
+				}
+				else if (
+					p0 >= 0 &&
+					p1 >= 0 &&
+					p2 >= 0 &&
+					p3 >= 0 &&
+					p4 >= 0 &&
+					p5 >= 0 &&
+					p6 < 0 &&
+					p7 < 0
+					) {
+					wedgeData.push_back(vector<int>{p1, p3, p5, p0, p2, p4});
+				}
+				else if (
+					p0 >= 0 &&
+					p1 >= 0 &&
+					p2 < 0 &&
+					p3 < 0 &&
+					p4 >= 0 &&
+					p5 >= 0 &&
+					p6 >= 0 &&
+					p7 >= 0
+					) {
+					wedgeData.push_back(vector<int>{p1, p7, p5, p0, p6, p4});
+				}
 
-			else if (
-				p0 >= 0 &&
-				p1 < 0 &&
-				p2 >= 0 &&
-				p3 < 0 &&
-				p4 >= 0 &&
-				p5 >= 0 &&
-				p6 >= 0 &&
-				p7 >= 0
-				) {
-				wedgeData.push_back(vector<int>{p0, p5, p4, p2, p7, p6});
-			}
-			else if (
-				p0 >= 0 &&
-				p1 >= 0 &&
-				p2 >= 0 &&
-				p3 >= 0 &&
-				p4 >= 0 &&
-				p5 < 0 &&
-				p6 >= 0 &&
-				p7 < 0
-				) {
-				wedgeData.push_back(vector<int>{p0, p1, p4, p2, p3, p6});
-			}
-			else if (
-				p0 >= 0 &&
-				p1 >= 0 &&
-				p2 >= 0 &&
-				p3 >= 0 &&
-				p4 < 0 &&
-				p5 >= 0 &&
-				p6 < 0 &&
-				p7 >= 0
-				) {
-				wedgeData.push_back(vector<int>{p0, p1, p5, p2, p3, p7});
-			}
-			else if (
-				p0 < 0 &&
-				p1 >= 0 &&
-				p2 < 0 &&
-				p3 >= 0 &&
-				p4 >= 0 &&
-				p5 >= 0 &&
-				p6 >= 0 &&
-				p7 >= 0
-				) {
-				wedgeData.push_back(vector<int>{p4, p1, p5, p6, p3, p7});
-			}
+				else if (
+					p0 >= 0 &&
+					p1 < 0 &&
+					p2 >= 0 &&
+					p3 < 0 &&
+					p4 >= 0 &&
+					p5 >= 0 &&
+					p6 >= 0 &&
+					p7 >= 0
+					) {
+					wedgeData.push_back(vector<int>{p0, p5, p4, p2, p7, p6});
+				}
+				else if (
+					p0 >= 0 &&
+					p1 >= 0 &&
+					p2 >= 0 &&
+					p3 >= 0 &&
+					p4 >= 0 &&
+					p5 < 0 &&
+					p6 >= 0 &&
+					p7 < 0
+					) {
+					wedgeData.push_back(vector<int>{p0, p1, p4, p2, p3, p6});
+				}
+				else if (
+					p0 >= 0 &&
+					p1 >= 0 &&
+					p2 >= 0 &&
+					p3 >= 0 &&
+					p4 < 0 &&
+					p5 >= 0 &&
+					p6 < 0 &&
+					p7 >= 0
+					) {
+					wedgeData.push_back(vector<int>{p0, p1, p5, p2, p3, p7});
+				}
+				else if (
+					p0 < 0 &&
+					p1 >= 0 &&
+					p2 < 0 &&
+					p3 >= 0 &&
+					p4 >= 0 &&
+					p5 >= 0 &&
+					p6 >= 0 &&
+					p7 >= 0
+					) {
+					wedgeData.push_back(vector<int>{p4, p1, p5, p6, p3, p7});
+				}
 
-			else if (
-				p0 < 0 &&
-				p1 >= 0 &&
-				p2 >= 0 &&
-				p3 >= 0 &&
-				p4 < 0 &&
-				p5 >= 0 &&
-				p6 >= 0 &&
-				p7 >= 0
-				) {
-				wedgeData.push_back(vector<int>{p2, p1, p3, p6, p5, p7});
+				else if (
+					p0 < 0 &&
+					p1 >= 0 &&
+					p2 >= 0 &&
+					p3 >= 0 &&
+					p4 < 0 &&
+					p5 >= 0 &&
+					p6 >= 0 &&
+					p7 >= 0
+					) {
+					wedgeData.push_back(vector<int>{p2, p1, p3, p6, p5, p7});
+				}
+				else if (
+					p0 >= 0 &&
+					p1 < 0 &&
+					p2 >= 0 &&
+					p3 >= 0 &&
+					p4 >= 0 &&
+					p5 < 0 &&
+					p6 >= 0 &&
+					p7 >= 0
+					) {
+					wedgeData.push_back(vector<int>{p0, p3, p2, p4, p7, p6});
+				}
+				else if (
+					p0 >= 0 &&
+					p1 >= 0 &&
+					p2 >= 0 &&
+					p3 < 0 &&
+					p4 >= 0 &&
+					p5 >= 0 &&
+					p6 >= 0 &&
+					p7 < 0
+					) {
+					wedgeData.push_back(vector<int>{p4, p5, p6, p0, p1, p2});
+				}
+				else if (
+					p0 >= 0 &&
+					p1 >= 0 &&
+					p2 < 0 &&
+					p3 >= 0 &&
+					p4 >= 0 &&
+					p5 >= 0 &&
+					p6 < 0 &&
+					p7 >= 0
+					) {
+					wedgeData.push_back(vector<int>{p4, p5, p7, p0, p1, p3});
+				}
+				//----------------wedge data-----------------
 			}
-			else if (
-				p0 >= 0 &&
-				p1 < 0 &&
-				p2 >= 0 &&
-				p3 >= 0 &&
-				p4 >= 0 &&
-				p5 < 0 &&
-				p6 >= 0 &&
-				p7 >= 0
-				) {
-				wedgeData.push_back(vector<int>{p0, p3, p2, p4, p7, p6});
-			}
-			else if (
-				p0 >= 0 &&
-				p1 >= 0 &&
-				p2 >= 0 &&
-				p3 < 0 &&
-				p4 >= 0 &&
-				p5 >= 0 &&
-				p6 >= 0 &&
-				p7 < 0
-				) {
-				wedgeData.push_back(vector<int>{p4, p5, p6, p0, p1, p2});
-			}
-			else if (
-				p0 >= 0 &&
-				p1 >= 0 &&
-				p2 < 0 &&
-				p3 >= 0 &&
-				p4 >= 0 &&
-				p5 >= 0 &&
-				p6 < 0 &&
-				p7 >= 0
-				) {
-				wedgeData.push_back(vector<int>{p4, p5, p7, p0, p1, p3});
-			}
-			//----------------wedge data-----------------
-
 		}
 
 
@@ -259,7 +260,7 @@ void SphereVTK::createCells()
 
 int SphereVTK::findIndex(int _i, int _j, int _k)
 {
-	for (size_t i = 0; i < indexData.size(); i++)
+	for (int i = 0; i < indexData.size(); i++)
 	{
 		if (indexData[i][0] == _i &&
 			indexData[i][1] == _j &&
@@ -271,7 +272,7 @@ int SphereVTK::findIndex(int _i, int _j, int _k)
 
 int SphereVTK::findIndex(int _i, int _j, int _k, int begin, int end)
 {
-	for (size_t i = begin; i <= end; i++)
+	for (int i = begin; i <= end; i++)
 	{
 		if (indexData[i][0] == _i &&
 			indexData[i][1] == _j &&
@@ -283,7 +284,7 @@ int SphereVTK::findIndex(int _i, int _j, int _k, int begin, int end)
 
 int SphereVTK::findFirstI(int _i)
 {
-	for (size_t i = 0; i < indexData.size(); i++)
+	for (int i = 0; i < indexData.size(); i++)
 	{
 		if (indexData[i][0] == _i)
 			return i;
@@ -295,7 +296,7 @@ int SphereVTK::findEndI(int _i)
 {
 	bool is_begin_find = false;
 	
-	for (size_t i = 0; i < indexData.size(); i++)
+	for (int i = 0; i < indexData.size(); i++)
 	{
 		if (!is_begin_find && indexData[i][0] == _i) is_begin_find = true;
 		if (is_begin_find && indexData[i][0] != _i) return i - 1;
@@ -308,7 +309,7 @@ vector<int> SphereVTK::findMinInLayer(int _i)
 {
 	bool is_begin_find = false;
 	vector<int> min{ -1, -1, -1 };
-	for (size_t i = 0; i < indexData.size(); i++)
+	for (int i = 0; i < indexData.size(); i++)
 	{
 		if (!is_begin_find && indexData[i][0] == _i) { 
 			is_begin_find = true;
@@ -330,7 +331,7 @@ vector<int> SphereVTK::findMaxInLayer(int _i)
 {
 	bool is_begin_find = false;
 	vector<int> max{ -1, -1, -1 };
-	for (size_t i = 0; i < indexData.size(); i++)
+	for (int i = 0; i < indexData.size(); i++)
 	{
 		if (!is_begin_find && indexData[i][0] == _i) {
 			is_begin_find = true;

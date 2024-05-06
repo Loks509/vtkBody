@@ -14,7 +14,7 @@ public:
 	void setSmooth(bool isSmooth);
 private:
 	ofstream file;
-	size_t Nx, Ny, Nz;
+	int Nx, Ny, Nz;
 	vector<vector<double>> pointData;
 	vector<vector<int>> indexData;
 	vector<complex<double>> valueData;
